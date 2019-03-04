@@ -1,6 +1,6 @@
 numpy==1.12.1
 scipy==1.0.1
-pandas==0.19.2
+pandas==0.24.0
 statsmodels==0.8.0
 scikit-learn==0.19.1
 altair==2.3.0
