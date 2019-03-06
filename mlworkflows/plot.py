@@ -39,7 +39,7 @@ def binary_confusion_matrix(predictions, actuals, labels = None, normalize = Fal
         x='predicted:O',
         y='actual:O',
         color='value:Q',
-        tooltip=["value"]
+        tooltip=["value:Q"]
     ).properties(width=width, height=height)
 
     return (cmdf, c)
