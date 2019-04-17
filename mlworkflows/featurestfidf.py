@@ -6,9 +6,6 @@ from sklearn.feature_extraction.text import HashingVectorizer
 class tfidfFeatureVector:
     """Convert a collection of raw documents to tfidf feature vectors"""
 
-    def __init__(self):
-        self
-
     def hv_count(self, corpus, n_feats):
         """
         hashes words from the _corpus_ of text
