@@ -32,6 +32,7 @@ def hv_tfidf(hv_counts, df):
 
     return labled_vecs
 
+
 def features_tfidf(df):
     """
     computes tf-idf feature vectors for
@@ -42,3 +43,11 @@ def features_tfidf(df):
     features = hv_tfidf(hash_counts, df)
 
     return features
+
+
+def transform(df, **transform_params):
+    return features_tfidf(df)
+
+
+def fit(self, **fit_params):
+    return self
