@@ -47,9 +47,9 @@ class tfidfFeatureVector:
         return features
 
 
-    def transform(self, df, **transform_params):
+    def transform(self, df):
         return self.features_tfidf(df)
 
 
-    def fit(self, **fit_params):
+    def fit(self, df, **fit_params):
         return self
