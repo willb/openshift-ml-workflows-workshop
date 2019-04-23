@@ -2,6 +2,8 @@ import altair as alt
 import pandas as pd
 import numpy as np
 
+
+
 MAX_POINTS = 2500
 
 def activate():
@@ -12,6 +14,53 @@ def plot_points(df, **kwargs):
     activate()
     plot_df = df.sample(min(len(df), MAX_POINTS))
     return alt.Chart(plot_df).encode(**kwargs).mark_point().interactive()
+
+
+def plot_pca(df, input_column, **kwargs):
+    import sklearn.decomposition
+    DIMENSIONS = 2
+    
+    activate()
+    samples = MAX_POINTS
+    
+    if "func" in kwargs:
+        func = kwargs["func"]
+        del kwargs["func"]
+    else:
+        func = lambda x: x
+    
+    a = np.array([func(v) for v in df[input_column].values])
+    
+    pca_a = sklearn.decomposition.PCA(DIMENSIONS).fit_transform(a)
+    pca_data = pd.concat([df.reset_index(), pd.DataFrame(pca_a, columns=["x", "y"])], axis=1)
+
+    return plot_points(pca_data, **kwargs) 
+    
+def plot_tsne(df, input_column, **kwargs):
+    import sklearn.manifold
+    
+    activate()
+    samples = MAX_POINTS
+    
+    if "tsne_sample" in kwargs:
+        samples = kwargs["tsne_sample"]
+        del kwargs["tsne_sample"]
+    
+    sdf = df.sample(samples)
+    
+    if "func" in kwargs:
+        func = kwargs["func"]
+        del kwargs["func"]
+    else:
+        func = lambda x: x
+    
+    a = np.array([func(v) for v in sdf[input_column].values])
+    
+    tsne = sklearn.manifold.TSNE()
+    tsne_a = tsne.fit_transform(a)
+    tsne_plot_data = pd.concat([sdf.reset_index(), pd.DataFrame(tsne_a, columns=["x", "y"])], axis=1)
+
+    return plot_points(tsne_plot_data, **kwargs)    
     
 def binary_confusion_matrix(predictions, actuals, labels = None, width = 215, height = 215):
     activate()
