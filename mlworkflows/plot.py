@@ -15,6 +15,27 @@ def plot_points(df, **kwargs):
     plot_df = df.sample(min(len(df), MAX_POINTS))
     return alt.Chart(plot_df).encode(**kwargs).mark_point().interactive()
 
+
+def plot_pca(df, input_column, **kwargs):
+    import sklearn.decomposition
+    DIMENSIONS = 2
+    
+    activate()
+    samples = MAX_POINTS
+    
+    if "func" in kwargs:
+        func = kwargs["func"]
+        del kwargs["func"]
+    else:
+        func = lambda x: x
+    
+    a = np.array([func(v) for v in df[input_column].values])
+    
+    pca_a = sklearn.decomposition.PCA(DIMENSIONS).fit_transform(a)
+    pca_data = pd.concat([df.reset_index(), pd.DataFrame(pca_a, columns=["x", "y"])], axis=1)
+
+    return plot_points(pca_data, **kwargs) 
+    
 def plot_tsne(df, input_column, **kwargs):
     import sklearn.manifold
     
