@@ -20,8 +20,6 @@ ENV LANGUAGE=en_US.UTF-8 \
     MINICONDA_VERSION=4.6.14 \
     MINICONDA_HASH=718259965f234088d785cad1fbd7de03
 
-# TODO remove tini after docker 1.13.1
-
 LABEL io.k8s.description="PySpark Jupyter Notebook." \
       io.k8s.display-name="PySpark Jupyter Notebook." \
       io.openshift.expose-services="8888:http"
