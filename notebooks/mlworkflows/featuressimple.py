@@ -12,7 +12,7 @@ class SimpleSummaries(TransformerMixin):
         return self
 
     def transform(self, X):
-        features = X.apply(self.standard_summary).values.tolist()
+        features = [self.standard_summary(doc) for doc in X]
         return features
 
     def standard_summary(self, row):
