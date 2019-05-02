@@ -137,9 +137,8 @@ items:
           deploymentConfig: ${APPLICATION_NAME}
     parameters:
     - description: 'The name to use for the buildconfig, imagestream and deployment components'
-      from: 'pipeline-[az0-9]{4}'
-      generate: expression
       name: APPLICATION_NAME
+      value: pipeline
       required: true
     - description: The URL of the repository with your notebooks
       displayName: Git Repository URL
