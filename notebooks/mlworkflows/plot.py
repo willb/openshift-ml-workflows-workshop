@@ -62,7 +62,7 @@ def plot_tsne(df, input_column, **kwargs):
 
     return plot_points(tsne_plot_data, **kwargs)    
     
-def binary_confusion_matrix(predictions, actuals, labels = None, width = 215, height = 215):
+def binary_confusion_matrix(actuals, predictions, labels = None, width = 215, height = 215):
     activate()
     from sklearn.metrics import confusion_matrix
     
@@ -72,7 +72,7 @@ def binary_confusion_matrix(predictions, actuals, labels = None, width = 215, he
     
     assert(len(labels) == 2)
     
-    ccm = confusion_matrix(predictions, actuals, labels=labels)
+    ccm = confusion_matrix(actuals, predictions, labels=labels)
     ncm = ccm.astype('float') / ccm.sum(axis=1)[:, np.newaxis]
     
     def labelizer(labels):
