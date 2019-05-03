@@ -12,7 +12,7 @@ class SimpleSummaries(TransformerMixin):
         return self
 
     def transform(self, X):
-        features = X.apply(self.standard_summary).values.tolist()
+        features = [self.standard_summary(doc) for doc in X]
         return features
 
     def standard_summary(self, row):
@@ -20,7 +20,7 @@ class SimpleSummaries(TransformerMixin):
         takes in text and returns 'simple' summaries.
         """
 
-        no_punct = self.strip_punct(row)
+        no_punct = self.strip_punct(str(row))
 
         words = no_punct[0].split()
 
@@ -48,10 +48,10 @@ class SimpleSummaries(TransformerMixin):
         returns a tuple of the punctuation-free
         _doc_ and the count of punctuation in _doc_
         """
-        return re.subn(r"""[!.><:;',@#~{}\[\]\-_+=£$%^&()?]""", "", text, count=0, flags=0)
+        return re.subn(r"""[!.><:;',@#~{}\[\]\-_+=£$%^&()?]""", "", str(text), count=0, flags=0)
 
     def caps(self, word):
-        return not word.islower()
+        return not str(word).islower()
 
     def isstopword(self, word):
         return word in ENGLISH_STOP_WORDS
