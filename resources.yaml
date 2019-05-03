@@ -17,7 +17,7 @@ items:
       - annotations: null
         from:
           kind: DockerImage
-          name: quay.io/willbenton/simple-model-s2i:pipeline-s2i
+          name: quay.io/willbenton/simple-model-s2i:summit2019
         importPolicy: {}
         name: pipelines
         referencePolicy:
@@ -214,7 +214,7 @@ items:
             spec:
               containers:
                 - name: ${NAME}
-                  image: quay.io/willbenton/ml-workflows-for-developers:pipelines
+                  image: quay.io/willbenton/ml-workflows-for-developers:summit2019
                   imagePullPolicy: IfNotPresent
                   ports:
                     - name: http-port
