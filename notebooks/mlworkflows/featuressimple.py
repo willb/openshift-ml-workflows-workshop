@@ -39,8 +39,9 @@ class SimpleSummaries(TransformerMixin):
         upper = sum([self.caps(x) for x in words])
         stop_words = sum([self.isstopword(x) for x in words])
 
-        return [no_punct[1], number_words, mean_wl, max_wl, min_wl, pc_10_wl,
-                pc_90_wl, upper, stop_words]
+        return {'no_punct' : no_punct[1], 'number_words' : number_words, 'mean_wl' : mean_wl, 
+                'max_wl' : max_wl, 'min_wl' : min_wl, 'pc_10_wl' : pc_10_wl, 'pc_90_wl' : pc_90_wl, 
+                'upper' : upper, 'stop_words' : stop_words}
 
     def strip_punct(self, text):
         """
