@@ -17,7 +17,7 @@ class SimpleSummaries(TransformerMixin, BaseEstimator):
         return self
 
     def transform(self, X):
-        features = [self.standard_summary(doc) for doc in X]
+        features = pd.DataFrame.from_records([self.standard_summary(doc) for doc in X])
         return features
 
     def standard_summary(self, row):
@@ -44,7 +44,7 @@ class SimpleSummaries(TransformerMixin, BaseEstimator):
         upper = sum([self.caps(x) for x in words])
         stop_words = sum([self.isstopword(x) for x in words])
 
-        return [no_punct[1], number_words, mean_wl, max_wl, min_wl, pc_10_wl, pc_90_wl, upper, stop_words]
+        return dict(zip(SimpleSummaries.columns(), [no_punct[1], number_words, mean_wl, max_wl, min_wl, pc_10_wl, pc_90_wl, upper, stop_words]))
 
     def strip_punct(self, text):
         """
