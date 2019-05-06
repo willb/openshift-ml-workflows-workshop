@@ -19,7 +19,7 @@ items:
           kind: DockerImage
           name: quay.io/willbenton/simple-model-s2i:summit2019
         importPolicy: {}
-        name: pipelines
+        name: summit2019
         referencePolicy:
           type: Source
 
@@ -67,7 +67,7 @@ items:
               value: ${S2I_SOURCE_NOTEBOOK_LIST}
             from:
               kind: ImageStreamTag
-              name: pipeline-s2i:pipelines
+              name: pipeline-s2i:summit2019
           type: Source
         triggers:
         - imageChange: {}
@@ -147,7 +147,7 @@ items:
     - description: Optional branch, tag or commit
       displayName: Git Reference
       name: GIT_REF
-      value: pipelines
+      value: summit2019
     - description: Git sub-directory path
       name: CONTEXT_DIR
       value: notebooks
@@ -159,7 +159,7 @@ items:
     kind: Template
     labels:
       application: notebook
-      createdBy: template-radanalytics-jupyter-notebook
+      createdBy: template-jupyter-notebook
     metadata:
       annotations:
         description: Launch a Jupyter notebook
