@@ -1,0 +1,21 @@
+--- 
+name: "Machine learning workflows for application developers"
+authors: 
+  - 
+    name: "Sophie Watson"
+    email: sophie@redhat.com
+  - 
+    name: "William Benton"
+    email: willb@redhat.com
+  - 
+    name: "Michael McCune"
+    email: msm@redhat.com
+duration: "120 minutes"
+keywords: 
+  - OpenShift
+  - "machine learning"
+  - AI
+  - Jupyter
+  - Python
+  - workflow
+repo: "https://github.com/willb/openshift-ml-workflows-workshop"

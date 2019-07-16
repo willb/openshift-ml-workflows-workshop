@@ -1,0 +1,254 @@
+kind: List
+apiVersion: v1
+metadata: {}
+
+items:
+
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      name: pipeline-s2i
+      labels:
+        radanalyticslabs.io/imagestream: pipeline-s2i
+    spec:
+      lookupPolicy:
+        local: true
+      tags:
+      - annotations: null
+        from:
+          kind: DockerImage
+          name: quay.io/willbenton/simple-model-s2i:summit2019
+        importPolicy: {}
+        name: summit2019
+        referencePolicy:
+          type: Source
+
+  - apiVersion: v1
+    kind: Template
+    labels:
+      application: pipeline
+    metadata:
+      annotations:
+        description: Create a buildconfig, imagestream and deploymentconfig using source-to-image and Jupyter notebook source files hosted in git
+        openshift.io/display-name: scikit-learn pipelines
+      name: pipeline-s2i-build-dc
+    objects:
+    - apiVersion: v1
+      kind: ImageStream
+      metadata:
+        name: ${APPLICATION_NAME}
+        labels:
+          app: ${APPLICATION_NAME}
+      spec:
+        dockerImageRepository: ${APPLICATION_NAME}
+        tags:
+        - name: latest
+    - apiVersion: v1
+      kind: BuildConfig
+      metadata:
+        name: ${APPLICATION_NAME}
+        labels:
+          app: ${APPLICATION_NAME}
+      spec:
+        output:
+          to:
+            kind: ImageStreamTag
+            name: ${APPLICATION_NAME}:latest
+        source:
+          contextDir: ${CONTEXT_DIR}
+          git:
+            ref: ${GIT_REF}
+            uri: ${GIT_URI}
+          type: Git
+        strategy:
+          sourceStrategy:
+            env:
+            - name: S2I_SOURCE_NOTEBOOK_LIST
+              value: ${S2I_SOURCE_NOTEBOOK_LIST}
+            from:
+              kind: ImageStreamTag
+              name: pipeline-s2i:summit2019
+          type: Source
+        triggers:
+        - imageChange: {}
+          type: ImageChanges
+        - type: ConfigChange
+        - github:
+            secret: ${APPLICATION_NAME}
+          type: GitHub
+        - generic:
+            secret: ${APPLICATION_NAME}
+          type: Generic
+    - apiVersion: v1
+      kind: DeploymentConfig
+      metadata:
+        name: ${APPLICATION_NAME}
+        labels:
+          deploymentConfig: ${APPLICATION_NAME}
+          app: ${APPLICATION_NAME}
+      spec:
+        replicas: 1
+        selector:
+          deploymentConfig: ${APPLICATION_NAME}
+        strategy:
+          type: Rolling
+        template:
+          metadata:
+            labels:
+              deploymentConfig: ${APPLICATION_NAME}
+              app: ${APPLICATION_NAME}
+          spec:
+            containers:
+            - env:
+              - name: POD_NAME
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.name
+              image: ${APPLICATION_NAME}
+              imagePullPolicy: IfNotPresent
+              name: ${APPLICATION_NAME}
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+            dnsPolicy: ClusterFirst
+            restartPolicy: Always
+        triggers:
+        - imageChangeParams:
+            automatic: true
+            containerNames:
+              - ${APPLICATION_NAME}
+            from:
+              kind: ImageStreamTag
+              name: ${APPLICATION_NAME}:latest
+          type: ImageChange
+        - type: ConfigChange
+    - apiVersion: v1
+      kind: Service
+      metadata:
+        name: ${APPLICATION_NAME}
+        labels:
+          app: ${APPLICATION_NAME}
+      spec:
+        ports:
+        - name: 8080-tcp
+          port: 8080
+          protocol: TCP
+          targetPort: 8080
+        selector:
+          deploymentConfig: ${APPLICATION_NAME}
+    parameters:
+    - description: 'The name to use for the buildconfig, imagestream and deployment components'
+      name: APPLICATION_NAME
+      value: pipeline
+      required: true
+    - description: The URL of the repository with your notebooks
+      displayName: Git Repository URL
+      name: GIT_URI
+      value: https://github.com/willb/ml-workflows-for-developers
+    - description: Optional branch, tag or commit
+      displayName: Git Reference
+      name: GIT_REF
+      value: summit2019
+    - description: Git sub-directory path
+      name: CONTEXT_DIR
+      value: notebooks
+    - description: a comma-delimited list of notebooks to execute to generate the pipeline stages
+      value: 03-feature-engineering-tfidf.ipynb,04-model-logistic-regression.ipynb
+      name: S2I_SOURCE_NOTEBOOK_LIST
+
+  - apiVersion: v1
+    kind: Template
+    labels:
+      application: notebook
+      createdBy: template-jupyter-notebook
+    metadata:
+      annotations:
+        description: Launch a Jupyter notebook
+        openshift.io/display-name: Jupyter Notebook
+      name: notebook
+    objects:
+      - kind: Service
+        metadata:
+          name: ${NAME}
+          labels:
+            app: ${NAME}
+        apiVersion: v1
+        spec:
+          ports:
+          - name: http-port
+            protocol: TCP
+            port: 8888
+            targetPort: 8888
+          selector:
+            deploymentConfig: ${NAME}
+      - kind: Route
+        metadata:
+          name: ${NAME}
+          labels:
+            app: ${NAME}
+        apiVersion: v1
+        spec:
+          path: /
+          to:
+            name: ${NAME}
+            kind: Service
+      - kind: DeploymentConfig
+        metadata:
+          name: ${NAME}
+          labels:
+            app: ${NAME}
+            deploymentConfig: ${NAME}
+        apiVersion: v1
+        spec:
+          selector:
+            deploymentConfig: ${NAME}
+          strategy:
+            type: Rolling
+          triggers:
+            - type: ConfigChange
+          replicas: 1
+          template:
+            metadata:
+              labels:
+                app: ${NAME}
+                deploymentConfig: ${NAME}
+            spec:
+              containers:
+                - name: ${NAME}
+                  image: quay.io/willbenton/ml-workflows-for-developers:summit2019
+                  imagePullPolicy: IfNotPresent
+                  ports:
+                    - name: http-port
+                      containerPort: 8888
+                      protocol: TCP
+                  env:
+                    - name: JUPYTER_NOTEBOOK_PASSWORD
+                      value: ${JUPYTER_NOTEBOOK_PASSWORD}
+                  readinessProbe:
+                    failureThreshold: 3
+                    httpGet:
+                      path: /
+                      port: 8888
+                      scheme: HTTP
+                    periodSeconds: 10
+                    successThreshold: 1
+                    timeoutSeconds: 1
+                    initialDelaySeconds: 20
+                  livenessProbe:
+                    failureThreshold: 3
+                    httpGet:
+                      path: /
+                      port: 8888
+                      scheme: HTTP
+                    periodSeconds: 10
+                    successThreshold: 1
+                    timeoutSeconds: 1
+                    initialDelaySeconds: 20
+    parameters:
+      - name: NAME
+        description: A name for this notebook instance
+        generate: expression
+        from: 'jupyter-[a-z0-9]{4}'
+      - name: JUPYTER_NOTEBOOK_PASSWORD
+        description: A password for the notebook interface
+        required: true
+        value: developer
