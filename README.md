@@ -4,4 +4,4 @@ This repository has materials from a hands-on tutorial on machine learning workf
 
 Our slides from presenting the lab at Red Hat Summit 2019 are available [as a PDF](./slides/rendered/ml-workflows-for-developers.pdf) or [as a movie](./slides/rendered/ml-workflows-for-developers.m4v).
 
-This repository is also intended to demonstrate the [new reproducible workshops standards](https://github.com/sophwats/reproducible-workshops) that are currently under development.  Feedback is welcome.
+This repository is also intended to demonstrate the [new reproducible workshops standards](https://github.com/sophwats/reproducible-workshops) that are currently under development.  We've intentionally let it fall short of the standard in places and have [filed issues](https://github.com/willb/openshift-ml-workflows-workshop/issues) about these shortcomings.  Feedback is welcome.
