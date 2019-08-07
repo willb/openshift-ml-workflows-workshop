@@ -17,8 +17,8 @@ ENV LANGUAGE=en_US.UTF-8 \
     NB_PYTHON_VER=3.7 \
     PATH=$CONDA_DIR/bin:$PATH \
     SPARK_HOME=/opt/spark \
-    MINICONDA_VERSION=4.6.14 \
-    MINICONDA_HASH=718259965f234088d785cad1fbd7de03
+    MINICONDA_VERSION=4.7.10 \
+    MINICONDA_HASH=1c945f2b3335c7b2b15130b1b2dc5cf4
 
 LABEL io.k8s.description="PySpark Jupyter Notebook." \
       io.k8s.display-name="PySpark Jupyter Notebook." \
@@ -50,16 +50,16 @@ ADD requirements.txt /home/requirements.txt
 ENV HOME /home/$NB_USER
 RUN mkdir $HOME/.jupyter \
     && cd /tmp \
-    && curl -s -o Miniconda3.sh https://repo.continuum.io/miniconda/Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh \
+    && curl -s -o Miniconda3.sh https://repo.anaconda.com/miniconda/Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh \
     && echo ${MINICONDA_HASH} Miniconda3.sh | md5sum -c - \
     && bash Miniconda3.sh -b -p $CONDA_DIR \
     && rm Miniconda3.sh \
     && export PATH=$CONDA_DIR/bin:$PATH \
-    && $CONDA_DIR/bin/conda config --system --prepend channels conda-forge  \
+    && $CONDA_DIR/bin/conda config --system --append channels conda-forge  \
     && $CONDA_DIR/bin/conda config --system --set auto_update_conda false  \
     && $CONDA_DIR/bin/conda config --system --set show_channel_urls true  \
     && $CONDA_DIR/bin/conda update --all --quiet --yes  \
-    && $CONDA_DIR/bin/conda install --yes --quiet 'nomkl' jupyter 'notebook=5.7.*' $(while read requirement; do echo \'$requirement\'; done < /home/requirements.txt) \
+    && $CONDA_DIR/bin/conda install --yes --quiet jupyter 'notebook==6.0.0' $(while read requirement; do echo \'$requirement\'; done < /home/requirements.txt) \
     && $CONDA_DIR/bin/conda clean -tipsy \
     && $CONDA_DIR/bin/conda remove --quiet --yes --force qt pyqt \
     && jupyter nbextension enable --py widgetsnbextension --sys-prefix \
