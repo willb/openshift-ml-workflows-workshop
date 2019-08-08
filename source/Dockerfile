@@ -61,7 +61,6 @@ RUN mkdir $HOME/.jupyter \
     && $CONDA_DIR/bin/conda update --all --quiet --yes  \
     && $CONDA_DIR/bin/conda install --yes --quiet jupyter 'notebook==6.0.0' $(while read requirement; do echo \'$requirement\'; done < /home/requirements.txt) \
     && $CONDA_DIR/bin/conda clean -tipsy \
-    && $CONDA_DIR/bin/conda remove --quiet --yes --force qt pyqt \
     && jupyter nbextension enable --py widgetsnbextension --sys-prefix \
     && fix-permissions.sh $CONDA_DIR \
     && fix-permissions.sh $HOME \
