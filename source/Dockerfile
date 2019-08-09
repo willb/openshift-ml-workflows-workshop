@@ -98,6 +98,8 @@ RUN export PATH=$CONDA_DIR/bin:$PATH \
     && fix-permissions.sh /home/$NB_USER
 
 ADD start.sh /usr/local/bin/start.sh
+ADD start-singleuser.sh /usr/local/bin/start-singleuser.sh
+
 WORKDIR /notebooks
 CMD ["/bin/bash", "start.sh"]
 
