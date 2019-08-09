@@ -91,7 +91,8 @@ RUN mkdir -p $HOME/.jupyter \
     && fix-permissions.sh $CONDA_DIR \
     && fix-permissions.sh /notebooks \
     && fix-permissions.sh /notebooks/data \
-    && fix-permissions.sh $HOME
+    && fix-permissions.sh $HOME \
+    && rm -f /notebooks/Dockerfile /notebooks/*.sh
 
 ENV XDG_CACHE_HOME /home/$NB_USER/.cache/
 RUN export PATH=$CONDA_DIR/bin:$PATH \
