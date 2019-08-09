@@ -46,7 +46,7 @@ if [[ "$NOTEBOOK_ARGS $@" != *"--ip="* ]]; then
   NOTEBOOK_ARGS="--ip=0.0.0.0 $NOTEBOOK_ARGS"
 fi
 
-JUPYTER_PROGRAM_ARGS="$JUPYTER_PROGRAM_ARGS --config=/opt/app-root/etc/jupyter_notebook_config.py"
+JUPYTER_PROGRAM_ARGS="$JUPYTER_PROGRAM_ARGS --config=/home/nbuser/.jupyter/jupyter_notebook_config.py"
 
 if [ ! -z "$JUPYTER_ENABLE_LAB" ]; then
     JUPYTER_PROGRAM="jupyter labhub"
@@ -54,4 +54,4 @@ else
     JUPYTER_PROGRAM="jupyterhub-singleuser"
 fi
 
-exec /opt/app-root/bin/start.sh $JUPYTER_PROGRAM $JUPYTER_PROGRAM_ARGS "$@"
+exec /usr/local/bin/start.sh $JUPYTER_PROGRAM $JUPYTER_PROGRAM_ARGS "$@"
