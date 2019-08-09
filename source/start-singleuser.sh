@@ -26,6 +26,8 @@ if [[ "$JUPYTER_PROGRAM_ARGS $@" != *"--ip="* ]]; then
     JUPYTER_PROGRAM_ARGS="--ip=0.0.0.0 $JUPYTER_PROGRAM_ARGS"
 fi
 
+export JUPYTER_PRELOAD_REPOS=https://github.com/willb/openshift-ml-workflows-workshop.git
+
 if [ -n "${JUPYTER_PRELOAD_REPOS}" ]; then
     for repo in `echo ${JUPYTER_PRELOAD_REPOS} | tr ',' ' '`; do
         echo "Checking if repository $repo exists locally"
@@ -37,6 +39,15 @@ if [ -n "${JUPYTER_PRELOAD_REPOS}" ]; then
         else
             GIT_SSL_NO_VERIFY=true git clone ${repo} ${REPO_DIR}
         fi
+        
+        if [[ x"$JUPYTER_PRELOAD_BRANCH" != "x" ]]; then
+            export JUPYTER_PRELOAD_BRANCH=rhte2019
+        fi
+
+        pushd ${REPO_DIR}
+        git checkout ${JUPYTER_PRELOAD_BRANCH}
+        popd
+        
     done
 fi
 
