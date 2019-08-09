@@ -46,8 +46,16 @@ if [ -n "${JUPYTER_PRELOAD_REPOS}" ]; then
 
         pushd ${REPO_DIR}
         git checkout ${JUPYTER_PRELOAD_BRANCH}
-        popd
         
+        if [[ x"$JUPYTER_PRELOAD_CONTEXT" != "x" ]]; then
+            export JUPYTER_PRELOAD_CONTEXT=source
+        fi
+        
+        if [ -d ${JUPYTER_PRELOAD_CONTEXT}]; then
+            git filter-branch --subdirectory-filter ${JUPYTER_PRELOAD_CONTEXT}
+        fi
+        
+        popd
     done
 fi
 
