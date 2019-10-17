@@ -49,6 +49,6 @@ Next up, we'll want to use the model service to make predictions, and for that, 
 
 There's one notebook left, and it's more or less "extra credit":
 
-- `99-baseline.ipynb` shows the classic Naive Bayes spam classification technique, which formed the basis for the first successful automatic spam classifiers.  Your attendees are unlikely to tune the other approaches so that they outperform Naive Bayes, but they may have fun trying!
+- `99-baseline.ipynb` shows the classic Naive Bayes spam classification technique, which formed the basis for the first successful automatic spam classifiers.  You are unlikely to tune the other approaches so that they outperform Naive Bayes, but you may have fun trying!
 
 Enjoy!
