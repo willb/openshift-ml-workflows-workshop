@@ -20,9 +20,9 @@ Here's how to run the interactive notebooks:
 
 ### Install the notebooks and dependencies
 
-1.  Clone this repository:  `git clone https://github.com/willb/data-sketching-and-other-magic-tricks/`
-    - tip:  if you don't have `git` installed, you can also [download an archive of this repository](https://github.com/willb/data-sketching-and-other-magic-tricks/archive/master.zip)
-2.  Change to this repository's directory:  `cd data-sketching-and-other-magic tricks`
+1.  Clone this repository:  `git clone https://github.com/willb/ml-workflows-notebook/`
+    - tip:  if you don't have `git` installed, you can also [download an archive of this repository](https://github.com/willb/ml-workflows-notebook/archive/master.zip)
+2.  Change to this repository's directory:  `cd ml-workflows-notebook`
 3.  Install the dependencies:  `pipenv install`
 4.  Run the notebooks:  `pipenv run jupyter notebook`
 
