@@ -6,6 +6,8 @@ This workshop is designed to show application developers how to incorporate mach
 - how to evaluate and validate predictive models, and some metrics that are more useful than raw accuracy;
 - how OpenShift enables every stage of machine learning discovery and production, including trying different approaches to solve a problem.
 
+Slides to accompany this workshop can be found [here.](https://docs.google.com/presentation/d/1JYw867N-nPI3fQY6jBuzsjxt4qIKtMaewUfDwN9AR_k/edit?usp=sharing)
+
 ## Background and workshop flow
 
 First, follow the instructions in [deploy.md](../deploy/deploy.md), installing the OpenShift template in a project for each workshop user (or just for yourself if you're trying it out locally).  A more streamlined experience is coming soon!
