@@ -23,7 +23,7 @@ Here's how to run the interactive notebooks:
 1.  Clone this repository:  `git clone https://github.com/willb/ml-workflows-notebook/`
     - tip:  if you don't have `git` installed, you can also [download an archive of this repository](https://github.com/willb/ml-workflows-notebook/archive/master.zip)
 2.  Change to this repository's directory:  `cd ml-workflows-notebook`
-3.  Install the dependencies:  `pipenv install`
+3.  Install the dependencies:  `pipenv install --skip-lock`
 4.  Run the notebooks:  `pipenv run jupyter notebook`
 
 # Running the lab on an OpenShift cluster:
