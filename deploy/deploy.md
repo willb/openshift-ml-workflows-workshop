@@ -4,7 +4,7 @@
 
 **Note**:  This workshop is _not yet available_ in the RHPDS catalog.  Stay tuned for an easier way to do things!
 
-To run this lab in RHPDS, first provision an OpenShift 4 workshop from the RHDPS catalog.  Requesting a Let's Encrypt certificate will make your life easier.  Once the environment is up and running, you'll get an email from RHPDS with the system GUID, bastion hostname, and so on.
+To run this lab in RHPDS, first provision an OpenShift 4 workshop from the RHDPS catalog.  Requesting a Let's Encrypt certificate will make your life easier.  Once the environment is up and running, you'll get an email from RHPDS with the system GUID, bastion hostname, and so on.  The rest of these steps assume you're in this directory of a checkout of this repo.
 
 1.  Log in to the bastion host, following the instructions in the email.
 1.  Add an `authorized_keys` file.  If you have a GitHub account with an ssh key, you can do it like this:
