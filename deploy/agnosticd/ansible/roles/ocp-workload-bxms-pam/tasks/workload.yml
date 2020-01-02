@@ -1,0 +1,27 @@
+---
+- name: define ocp_project
+  set_fact:
+    ocp_project: "rhpam-dev-{{ ocp_username }}"
+
+- name: Prep local filesystem for temp files
+  file:
+    path: "/tmp/{{ ocp_username }}"
+    state: directory
+
+
+# Modify kieserver to include required data products information
+- name: Download products data file
+  get_url:
+    url: '{{products_data}}'
+    dest: /tmp/{{ ocp_username }}/products.txt
+
+- name: Create products configmap
+  shell: oc create configmap products-cm --from-file=/tmp/{{ ocp_username }}/products.txt -n {{ocp_project}}
+
+- name: Modify kieserver to include products in a volume
+  shell: oc set volume dc/rhpam-kieserver -n {{ocp_project}} \
+        --overwrite --add -t configmap -m /data --name=products-volume --configmap-name=products-cm
+
+- name: workload Tasks Complete
+  debug:
+    msg: workload Tasks Complete
