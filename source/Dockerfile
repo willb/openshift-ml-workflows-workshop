@@ -25,7 +25,7 @@ RUN echo 'PS1="\u@\h:\w\\$ \[$(tput sgr0)\]"' >> /root/.bashrc \
     && chmod -R ug+rwx /opt \
     && useradd -m -s /bin/bash -N -u $NB_UID $NB_USER \
     && usermod -g root $NB_USER \
-    && yum install -y curl wget tree bzip2 git
+    && yum install -y curl wget bzip2 git
 
 
 USER $NB_USER
