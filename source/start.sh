@@ -1,7 +1,5 @@
 #!/bin/bash
 
-export PATH=$CONDA_DIR/bin:$PATH
-
 if [[ "x$JUPYTER_NOTEBOOK_PASSWORD" != "x" ]]; then
     HASH=$(python -c "from notebook.auth import passwd; print(passwd('$JUPYTER_NOTEBOOK_PASSWORD'))")
     echo "c.NotebookApp.password = u'$HASH'" >> /home/$NB_USER/.jupyter/jupyter_notebook_config.py
