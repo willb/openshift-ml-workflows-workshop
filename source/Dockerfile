@@ -1,4 +1,4 @@
-FROM registry.redhat.io/ubi8/python-36
+FROM registry.access.redhat.com/ubi8/python-36
 
 USER root
 
@@ -9,14 +9,10 @@ ENV LANGUAGE=en_US.UTF-8 \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
     PYTHONIOENCODING=UTF-8 \
-    CONDA_DIR=/opt/conda \
     NB_USER=nbuser \
     NB_UID=1011 \
     NB_PYTHON_VER=3.7 \
-    PATH=$CONDA_DIR/bin:$PATH \
-    SPARK_HOME=/opt/spark \
-    MINICONDA_VERSION=4.7.10 \
-    MINICONDA_HASH=1c945f2b3335c7b2b15130b1b2dc5cf4
+    SPARK_HOME=/opt/spark 
 
 LABEL io.k8s.description="PySpark Jupyter Notebook." \
       io.k8s.display-name="PySpark Jupyter Notebook." \
