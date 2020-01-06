@@ -57,6 +57,10 @@
   shell: |
       oc scale dc/jupyterhub --replicas=1 -n {{ project_name }}
 
+- name: add Kafka producer
+  shell: |
+      oc new-app centos/python-36-centos7~https://github.com/radanalyticsio/streaming-lab#spacy-fixes/ --context-dir=update-generator -e KAFKA_BROKERS=odh-message-bus-kafka-bootstrap:9092 -e KAFKA_TOPIC=social-firehose --name=emitter
+
 # Leave this as the last task in the playbook.
 - name: workload tasks complete
   debug:
