@@ -80,6 +80,6 @@ ADD start.sh /usr/local/bin/start.sh
 ADD start-singleuser.sh /usr/local/bin/start-singleuser.sh
 
 WORKDIR /notebooks
-CMD ["/bin/bash", "start.sh"]
+CMD ["/bin/bash", "start-singleuser.sh"]
 
 USER $NB_USER
