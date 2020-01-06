@@ -11,3 +11,4 @@ cloudpickle==1.2.1
 kafka-python
 findspark==1.3.0
 spacy==2.0.0
+vaderSentiment
