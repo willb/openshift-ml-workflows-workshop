@@ -166,4 +166,4 @@
     definition: "{{ item }}"
   loop:
     - "{{ lookup('template', 'opendatahub-operator.operatorgroup.yaml.j2') }}"
-    - "{{ lookup('template', 'opendatahub-operator.v0.4.0.clusterserviceversion.yaml.j2') }}"
+    - "{{ lookup('template', 'opendatahub-operator.v0.5.1.clusterserviceversion.yaml.j2') }}"
