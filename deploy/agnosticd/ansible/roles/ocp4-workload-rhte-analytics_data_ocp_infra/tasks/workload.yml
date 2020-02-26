@@ -119,14 +119,6 @@
           verbs:
             - '*'
 
-- name: Confirm Seldon CRD and ClusterRole are present
-  k8s:
-    state: present
-    definition: "{{ item }}"
-  with_items:
-    - "{{ lookup('file', 'seldon/seldon-deployment.crd.json') }}"
-    - "{{ lookup('file', 'seldon/seldon-user.clusterrole.yaml') }}"
-
 - name: Confirm Kafka CRDs and ClusterRoles are present
   k8s:
     state: present
