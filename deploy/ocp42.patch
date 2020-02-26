@@ -1,0 +1,24 @@
+diff --git a/deploy/agnosticd/ansible/roles/ocp4-workload-rhte-analytics_data_ocp_infra/tasks/workload.yml b/deploy/agnosticd/ansible/roles/ocp4-workload-rhte-analytics_data_ocp_infra/tasks/workload.yml
+index d714d4ff..873d2152 100644
+--- a/deploy/agnosticd/ansible/roles/ocp4-workload-rhte-analytics_data_ocp_infra/tasks/workload.yml
++++ b/deploy/agnosticd/ansible/roles/ocp4-workload-rhte-analytics_data_ocp_infra/tasks/workload.yml
+@@ -10,6 +10,19 @@
+   register: canicreateprojects
+   failed_when: canicreateprojects.stdout != 'yes'
+ 
++- name: see if postgresql 9.5 imagestreamtag is available
++  k8s_facts:
++    api_version: image.openshift.io/v1
++    kind: ImageStreamTag
++    name: "postgresql:9.5"
++    namespace: openshift
++  register: pgsql95
++  
++- name: create postgresql 9.5 imagestreamtag if necessary
++  shell: |
++    oc create imagestreamtag postgresql:9.5 --from=openshift/postgresql:9.6 -n openshift
++  when: pgsql95.resources | length == 0
++
+ - name: Apply rook scc.yaml
+   k8s:
+     state: present

@@ -1,6 +1,4 @@
-# (ideally) minimal pyspark/jupyter notebook
-
-FROM centos:7
+FROM registry.access.redhat.com/ubi8/python-36
 
 USER root
 
@@ -11,14 +9,10 @@ ENV LANGUAGE=en_US.UTF-8 \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
     PYTHONIOENCODING=UTF-8 \
-    CONDA_DIR=/opt/conda \
     NB_USER=nbuser \
     NB_UID=1011 \
     NB_PYTHON_VER=3.7 \
-    PATH=$CONDA_DIR/bin:$PATH \
-    SPARK_HOME=/opt/spark \
-    MINICONDA_VERSION=4.6.14 \
-    MINICONDA_HASH=718259965f234088d785cad1fbd7de03
+    SPARK_HOME=/opt/spark 
 
 LABEL io.k8s.description="PySpark Jupyter Notebook." \
       io.k8s.display-name="PySpark Jupyter Notebook." \
@@ -31,7 +25,7 @@ RUN echo 'PS1="\u@\h:\w\\$ \[$(tput sgr0)\]"' >> /root/.bashrc \
     && chmod -R ug+rwx /opt \
     && useradd -m -s /bin/bash -N -u $NB_UID $NB_USER \
     && usermod -g root $NB_USER \
-    && yum install -y curl wget tree bzip2    
+    && yum install -y curl wget bzip2 git
 
 
 USER $NB_USER
@@ -48,25 +42,11 @@ ADD fix-permissions.sh /usr/local/bin/fix-permissions.sh
 ADD requirements.txt /home/requirements.txt
 
 ENV HOME /home/$NB_USER
-RUN mkdir $HOME/.jupyter \
-    && cd /tmp \
-    && curl -s -o Miniconda3.sh https://repo.continuum.io/miniconda/Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh \
-    && echo ${MINICONDA_HASH} Miniconda3.sh | md5sum -c - \
-    && bash Miniconda3.sh -b -p $CONDA_DIR \
-    && rm Miniconda3.sh \
-    && export PATH=$CONDA_DIR/bin:$PATH \
-    && $CONDA_DIR/bin/conda config --system --prepend channels conda-forge  \
-    && $CONDA_DIR/bin/conda config --system --set auto_update_conda false  \
-    && $CONDA_DIR/bin/conda config --system --set show_channel_urls true  \
-    && $CONDA_DIR/bin/conda update --all --quiet --yes  \
-    && $CONDA_DIR/bin/conda install --yes --quiet 'nomkl' jupyter 'notebook=5.7.*' $(while read requirement; do echo \'$requirement\'; done < /home/requirements.txt) \
-    && $CONDA_DIR/bin/conda clean -tipsy \
-    && $CONDA_DIR/bin/conda remove --quiet --yes --force qt pyqt \
+RUN pip3 install -r /home/requirements.txt \
+    && pip3 install jupyter jupyterhub notebook \ 
     && jupyter nbextension enable --py widgetsnbextension --sys-prefix \
-    && fix-permissions.sh $CONDA_DIR \
     && fix-permissions.sh $HOME \
-    && yum clean all -y
-     
+    && yum clean all -y     
 
 USER root
 
@@ -88,17 +68,18 @@ RUN mkdir -p $HOME/.jupyter \
     && rm -rf /root/.local \
     && rm -rf /root/tmp \
     && fix-permissions.sh /opt \
-    && fix-permissions.sh $CONDA_DIR \
     && fix-permissions.sh /notebooks \
     && fix-permissions.sh /notebooks/data \
-    && fix-permissions.sh $HOME
+    && fix-permissions.sh $HOME \
+    && rm -f /notebooks/Dockerfile /notebooks/*.sh
 
 ENV XDG_CACHE_HOME /home/$NB_USER/.cache/
-RUN export PATH=$CONDA_DIR/bin:$PATH \
-    && fix-permissions.sh /home/$NB_USER
+RUN fix-permissions.sh /home/$NB_USER
 
 ADD start.sh /usr/local/bin/start.sh
+ADD start-singleuser.sh /usr/local/bin/start-singleuser.sh
+
 WORKDIR /notebooks
-CMD ["/bin/bash", "start.sh"]
+CMD ["/bin/bash", "start-singleuser.sh"]
 
 USER $NB_USER
