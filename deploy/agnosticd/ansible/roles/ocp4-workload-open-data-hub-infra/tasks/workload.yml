@@ -78,7 +78,7 @@
     - "user.info: S3 URL http://{{ rookcephrgwip.stdout }}:{{ rookcephrgwport.stdout }}"
 
 - name: Apply opendatahub_v1alpha1_opendatahub_crd.yaml
-  command: oc apply -f https://gitlab.com/opendatahub/opendatahub-operator/raw/v0.3.0/deploy/crds/opendatahub_v1alpha1_opendatahub_crd.yaml
+  command: oc apply -f https://gitlab.com/opendatahub/opendatahub-operator/raw/v0.5.1/deploy/crds/opendatahub_v1alpha1_opendatahub_crd.yaml
 
 # Leave this as the last task in the playbook.
 - name: workload tasks complete
