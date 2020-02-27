@@ -48,7 +48,7 @@
 - name: Curling ODH resources
   get_url:
     force: yes
-    url: "https://gitlab.com/opendatahub/opendatahub-operator/raw/v0.3.0/deploy/{{ item }}"
+    url: "https://gitlab.com/opendatahub/opendatahub-operator/raw/v0.5.1/deploy/{{ item }}"
     dest: "/tmp/open-data-hub/odh/{{ item }}"
   loop:
     - crds/opendatahub_v1alpha1_opendatahub_crd.yaml
