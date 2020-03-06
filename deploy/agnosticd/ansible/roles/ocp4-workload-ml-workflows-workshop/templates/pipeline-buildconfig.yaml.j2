@@ -22,16 +22,27 @@ spec:
       cpu: 50m
       memory: 256Mi
   source:
-    contextDir: source
     git:
       ref: develop
-      uri: https://github.com/willb/openshift-ml-workflows-workshop
+      uri: https://github.com/willb/ml-workflows-notebook
     type: Git
   strategy:
     sourceStrategy:
       env:
       - name: S2I_SOURCE_NOTEBOOK_LIST
         value: 03-feature-engineering-tfidf.ipynb,04-model-logistic-regression.ipynb
+      - name: SUMMARIES_LOWER_QUANTILE
+        value: 0.3
+      - name: SUMMARIES_UPPER_QUANTILE
+        value: 0.7
+      - name: TFIDF_BUCKETS
+        value: 256
+      - name: TFIDF_ALTERNATE_SIGNS
+        value: 0
+      - name: RF_NUM_ESTIMATORS
+        value: 10
+      - name: RF_CRITERION
+        value: gini
       from:
         kind: ImageStreamTag
         name: simple-model-s2i:latest
