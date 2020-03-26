@@ -1,0 +1,32 @@
+---
+- set_fact:
+    user_name: "user{{ user_num }}"
+
+- name: Setting up user project
+  import_tasks: ./user_project.yml
+  become: false
+  when: ACTION == "create" or ACTION == "provision"
+  vars:
+    user_project: "{{ user_name }}"
+
+- name: Installing Open Data Hub
+  import_tasks: ./open_data_hub.yml
+  become: false
+  when: (ACTION == "create" or ACTION == "provision") and install_open_data_hub
+  vars:
+    user_project: "{{ user_name }}"
+
+- name: Installing Postgresql
+  import_tasks: ./postgresql.yml
+  become: false
+  when: (ACTION == "create" or ACTION == "provision") and install_postgres
+  vars:
+    user_project: " {{ user_name }} "
+
+- name: Installing CodeReady Workspaces
+  import_tasks: ./codeready.yml
+  become: false
+  when: (ACTION == "create" or ACTION == "provision") and install_codeready
+  vars:
+    user_project: " {{ user_name }} "
+
