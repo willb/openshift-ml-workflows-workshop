@@ -9,9 +9,12 @@
     state: absent
   when: workload_destroy|bool
 
-- name: Install OpenShift module
-  shell: pip3 install openshift
-  become: true
+- name: Verify python-openshift installed
+  yum:
+    name: python-openshift
+    state: present
+  become: yes
+  become_method: sudo
 
 # Leave this as the last task in the playbook.
 - name: pre_workload tasks complete
