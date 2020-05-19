@@ -5,7 +5,7 @@ metadata:
     capabilities: Basic Install
     categories: "AI/Machine Learning, Big Data"
     description: Open Data Hub is a community effort
-    containerImage: quay.io/opendatahub/opendatahub-operator:v0.4.0
+    containerImage: quay.io/opendatahub/opendatahub-operator:v0.5.1
     createdAt: 2019-08-06T13:32:33Z
     repository: https://gitlab.com/opendatahub/opendatahub-operator
     support: Open Data Hub
@@ -63,12 +63,12 @@ metadata:
           }
         }
       ]
-  name: opendatahub-operator.v0.4.0
+  name: opendatahub-operator.v0.5.1
   namespace: {{ project_name }}
 spec:
   maturity: alpha
-  version: 0.4.0
-  replaces: opendatahub-operator.v0.3.0
+  version: 0.5.1
+  replaces: opendatahub-operator.v0.4.0
   apiservicedefinitions: {}
   minKubeVersion: 1.11.0
   labels:
