@@ -15,6 +15,7 @@ scikit-learn = "~=0.22.1"
 vega = "*"
 pyarrow = "*"
 cloudpickle = "*"
+alibi-detect = "==0.4.1"
 jupyter = "*"
 
 [requires]
