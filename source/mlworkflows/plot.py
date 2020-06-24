@@ -78,7 +78,7 @@ def binary_confusion_matrix(actuals, predictions, labels = None, width = 215, he
     def labelizer(labels):
         def labelize(tup):
             i, v = tup
-            return {'predicted' : labels[int(i / 2)], 'actual' : labels[i & 1], 'raw_count' : v[0], 'value' : v[1]}
+            return { 'actual': labels[int(i / 2)],'predicted': labels[i & 1], 'raw_count': v[0], 'value': v[1]}
         return labelize
 
     labelize = labelizer(labels)
