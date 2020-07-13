@@ -7,7 +7,7 @@ import numpy as np
 MAX_POINTS = 2500
 
 def activate():
-    if alt.renderers.active != 'notebook':
+    if alt.__version__[0] < '4' and alt.renderers.active != 'notebook':
         alt.renderers.enable('notebook')
     
 def plot_points(df, **kwargs):
