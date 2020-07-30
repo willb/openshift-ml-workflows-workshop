@@ -16,6 +16,7 @@ vega = "*"
 pyarrow = "*"
 cloudpickle = "*"
 alibi-detect = "==0.4.1"
+alibi = { git = 'https://github.com/iionez/alibi' }
 jupyter = "*"
 
 [requires]
