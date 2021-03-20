@@ -14,7 +14,7 @@ futures==3.2.0
 httpie==0.9.9
 idna==2.7
 ipaddress==1.0.22
-Jinja2==2.10
+Jinja2==2.11.3
 jmespath==0.9.3
 MarkupSafe==1.0
 netaddr==0.7.19
